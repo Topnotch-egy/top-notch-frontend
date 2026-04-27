@@ -93,7 +93,7 @@ function PerspectiveCard({ stat, index }: { stat: Stat; index: number }) {
   );
 }
 
-export function PerspectiveStats({ stats }: { stats: Stat[] }) {
+export function PerspectiveStats({ stats }: { stats: readonly Stat[] }) {
   return (
     <div 
       className="mt-14 sm:mt-24 w-full grid grid-cols-1 md:grid-cols-3 gap-6"

@@ -3,6 +3,10 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
+type MatterMouseWithWheel = Matter.Mouse & {
+  mousewheel: EventListener;
+};
+
 export function PhysicsClients({ names, interactionHint }: { names: readonly string[]; interactionHint: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const elementsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -60,11 +64,12 @@ export function PhysicsClients({ names, interactionHint }: { names: readonly str
 
     // Mouse constraint so users can grab and toss pills
     const mouse = Matter.Mouse.create(container);
+    const mouseWheelHandler = (mouse as MatterMouseWithWheel).mousewheel;
     
     // Crucial for UX: we don't want the physics engine to highjack the page scroll wheel
-    mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
-    mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
-    mouse.element.removeEventListener('wheel', mouse.mousewheel);
+    mouse.element.removeEventListener("mousewheel", mouseWheelHandler);
+    mouse.element.removeEventListener("DOMMouseScroll", mouseWheelHandler);
+    mouse.element.removeEventListener("wheel", mouseWheelHandler);
 
     const mouseConstraint = Matter.MouseConstraint.create(engine, {
       mouse,

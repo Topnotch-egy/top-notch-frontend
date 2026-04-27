@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
 type BreathingGlowFrameProps = {
-  children: ReactNode;
+  children?: ReactNode;
   glowColor?: string;
   radius?: number | string;
   className?: string;
