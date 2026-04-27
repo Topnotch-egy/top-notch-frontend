@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Lenis smooth-scroll styles (inlined — upstream lenis/dist/lenis.css) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+.lenis.lenis-autoToggle {
+  transition-property: overflow;
+  transition-duration: 1ms;
+  transition-behavior: allow-discrete;
+}
+
+:root {
+  --background: #07090F;
+  --foreground: #F4F5F8;
+  --brand: #ED1C24;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Anchor-link offset: when #about, #services etc. are navigated to,
+   leave room for the h-20 fixed navbar. Applies everywhere, even where
+   snap is off. */
+main > section {
+  scroll-margin-top: 80px;
+}
+
+/* Section-by-section scroll snap — desktop / tablet only, and only when
+   the user hasn't asked for reduced motion. Proximity mode means the
+   viewport snaps to section starts when the user pauses near one, but
+   doesn't trap them on sections taller than 100vh (Services, Clients). */
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 80px;
+  }
+  main > section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+
+html[dir="rtl"] body {
+  font-family: var(--font-tajawal), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(237, 28, 36, 0.4);
+  color: #fff;
+}
+
+/* Thin custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #07090F;
+}
+::-webkit-scrollbar-thumb {
+  background: #262B38;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3A4050;
+}
+
+@layer components {
+  .container-xl {
+    @apply mx-auto w-full max-w-[1280px] px-5 sm:px-8 lg:px-12;
+  }
+
+  .glass {
+    background: rgba(17, 20, 29, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-strong {
+    background: rgba(11, 14, 22, 0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #ED1C24 0%, #FF505E 40%, #FFB7BD 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-subtle {
+    background: linear-gradient(180deg, #F4F5F8 0%, #9AA1B2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-brand-600 active:scale-95;
+    box-shadow: 0 10px 30px -10px rgba(237, 28, 36, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-border-strong bg-surface-1/60 px-6 py-3 sm:px-8 sm:py-3.5 text-sm font-medium text-foreground transition-all duration-300 hover:border-brand-400/50 hover:bg-surface-2 active:scale-95;
+  }
+
+  .section-label {
+    @apply inline-flex items-center gap-2 rounded-full border border-border bg-surface-1/60 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-muted;
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+}
+
+/* Mesh background with subtle motion */
+.mesh-bg {
+  background: radial-gradient(at 20% 10%, rgba(237, 28, 36, 0.18) 0, transparent 45%),
+    radial-gradient(at 80% 20%, rgba(0, 209, 255, 0.08) 0, transparent 40%),
+    radial-gradient(at 50% 80%, rgba(237, 28, 36, 0.12) 0, transparent 50%),
+    radial-gradient(at 10% 90%, rgba(255, 135, 145, 0.06) 0, transparent 40%);
+}
+
+/* Spotlight effect using CSS variables updated from JS */
+.spotlight {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  background: radial-gradient(
+    600px circle at var(--mouse-x) var(--mouse-y),
+    rgba(237, 28, 36, 0.08),
+    transparent 40%
+  );
+}
+
+/* RTL adjustments */
+html[dir="rtl"] .lucide {
+  transform: scaleX(-1);
+}
+
+/* Hide default focus outline, add a tasteful one */
+*:focus-visible {
+  outline: 2px solid rgba(237, 28, 36, 0.6);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Small-screen tightening (down to 370px) */
+@media (max-width: 380px) {
+  .container-xl {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
